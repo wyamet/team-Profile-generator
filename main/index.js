@@ -1,7 +1,10 @@
 const inquirer = require("inquirer");
+const fs = require("fs");
 const Engineer = require("./library/engineer");
 const Intern = require("./library/intern");
-// const pageTemplate = require("./main/src/pageTemplate");
+const OUTPUT_DIR = path.resolve(__dirname, "output");
+const outputPath = path.join(OUTPUT_DIR, "team.html");
+const generateTeam = require("./src/pageTemplate");
 const employees = [];
 const Manager = require("./library/manager");
 // Function to initialize app
@@ -135,6 +138,11 @@ function addIntern() {
       console.log(employees);
       menu();
     });
+}
+
+function createHtml() {
+  console.log("Created Team");
+  fs.writeFileSync(outputPath, generateTeam(employees), "UTF-8");
 }
 
 // initialize app
