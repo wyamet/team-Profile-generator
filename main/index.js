@@ -2,11 +2,14 @@ const inquirer = require("inquirer");
 const fs = require("fs");
 const Engineer = require("./library/engineer");
 const Intern = require("./library/intern");
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+const path = require("path");
+const OUTPUT_DIR = path.resolve(__dirname, "dist");
+const outputPath = path.join(OUTPUT_DIR, "index.html");
 const generateTeam = require("./src/pageTemplate");
 const employees = [];
 const Manager = require("./library/manager");
+const render = require("./src/pageTemplate");
+
 // Function to initialize app
 function init() {
   inquirer
@@ -139,11 +142,17 @@ function addIntern() {
       menu();
     });
 }
-
-function createHtml() {
-  console.log("Created Team");
-  fs.writeFileSync(outputPath, generateTeam(employees), "UTF-8");
-}
-
+const team = [];
+const writeFile = () => {
+  fs.writeFile("outputPath", JSON.stringify(team), (err) => {
+    if (err) {
+      console.log(err);
+      return;
+    } else {
+      console.log("Profile created successfully");
+    }
+  });
+};
+// writeHTML();
 // initialize app
 init();
