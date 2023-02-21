@@ -1,81 +1,82 @@
-const generateTeam = (team) => {
-  const generateManager = (manager) => {
-    return ` 
+const generateManager = (manager) => {
+  return ` 
+  <div class="card" style="width: 18rem;">
     <div class="card border-success mb-3" style="max-width: 18rem;">
     <div class="card-header bg-transparent border-success">Manager</div>
     <div class="card-body text-success">
       <h5 class="card-title">${manager.name}</h5>
-      <p class="card-text">${manager.description}</p>
-      <p class="card-text">${manager.email}</p>
-      <p class="card-text">${manager.officeNumber}</p>
+      <p class="card-text">ID:${manager.id}</p>
+      <p class="card-text">Email:${manager.email}</p>
+      <p class="card-text">Office #:${manager.officeNumber}</p>
+      </div>
+    </div>
     </div>
      `;
-  };
-
-  const generateEngineer = (engineer) => {
-    return `
-    <div class="card border-success mb-3" style="max-width: 18rem;">
-    <div class="card-header bg-transparent border-success">Manager</div>
-    <div class="card-body text-success">
-      <h5 class="card-title">${engineer.name}</h5>
-      <p class="card-text">${engineer.id}</p>
-      <p class="card-text">${engineer.email}</p>
-      <p class="card-text">${engineer.github}</p>
-    </div>
-    
-    `;
-  };
-
-  const generateIntern = (intern) => {
-    return `
-    <div class="card border-success mb-3" style="max-width: 18rem;">
-    <div class="card-header bg-transparent border-success">Manager</div>
-    <div class="card-body text-success">
-      <h5 class="card-title">${intern.name}</h5>
-      <p class="card-text">${intern.id}</p>
-      <p class="card-text">${intern.email}</p>
-      <p class="card-text">${intern.school}</p>
-    </div>
-    
-    `;
-  };
-
-  const html = [];
-  html.push(
-    team
-      .filter((employee) => employee.getRole() === "Manager")
-      .map((manager) => generateManager(manager))
-  );
-  html.push(
-    team
-      .filter((employee) => employee.getRole() === "Engineer")
-      .map((engineer) => generateEngineer(engineer))
-  );
-  html.push(
-    team
-      .filter((employee) => employee.getRole() === "Intern")
-      .map((intern) => generateIntern(intern))
-  );
-  return html.join("");
 };
 
-module.exports = (generateTeam) => {
+const generateEngineer = (engineer) => {
   return `
+  <div class="card" style="width: 18rem;">
+    <div class="card border-success mb-3" style="max-width: 18rem;">
+    <div class="card-header bg-transparent border-success">Engineer</div>
+    <div class="card-body text-success">
+      <h5 class="card-title">${engineer.name}</h5>
+      <p class="card-text">ID:${engineer.id}</p>
+      <p class="card-text">Email:${engineer.email}</p>
+      <p class="card-text">Github:${engineer.github}</p>
+      </div>
+    </div>
+    </div>
+    
+    `;
+};
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD" crossorigin="anonymous"></script>
-  </head>
-  <body>
-    <h1>Hello, Team!</h1>
-    ${generateTeam(team)}
-  </body>
-</html>
+const generateIntern = (intern) => {
+  return `
+  <div class="card" style="width: 18rem;">
+    <div class="card border-success mb-3" style="max-width: 18rem;">
+    <div class="card-header bg-transparent border-success">Intern</div>
+    <div class="card-body text-success">
+      <h5 class="card-title">${intern.name}</h5>
+      <p class="card-text">ID:${intern.id}</p>
+      <p class="card-text">Email:${intern.email}</p>
+      <p class="card-text">School:${intern.schoolName}</p>
+      </div>
+    </div>
+    </div>
+    
+    `;
+};
 
-`;
+const fs = require("fs");
+
+const generateHTML = function (employees) {
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+      <title>My Team</title>
+    </head>
+    <body>
+      <header>
+        <h1>My Team</h1>
+      </header>
+      <section>
+        ${employees}
+      </section>
+    </body>
+    </html>
+    `;
+};
+
+module.exports = {
+  generateHTML,
+  generateManager,
+  generateEngineer,
+  generateIntern,
 };

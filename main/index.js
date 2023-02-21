@@ -5,10 +5,9 @@ const Intern = require("./library/intern");
 const path = require("path");
 const OUTPUT_DIR = path.resolve(__dirname, "dist");
 const outputPath = path.join(OUTPUT_DIR, "index.html");
-const generateTeam = require("./src/pageTemplate");
+const template = require("./src/pageTemplate");
 const employees = [];
 const Manager = require("./library/manager");
-const render = require("./src/pageTemplate");
 
 // Function to initialize app
 function init() {
@@ -44,7 +43,7 @@ function init() {
         response.manager_office_number
       );
       console.log(managerInstance);
-      employees.push(managerInstance);
+      employees.push(template.generateManager(managerInstance));
       menu();
     });
 }
@@ -65,9 +64,27 @@ function menu() {
         addEngineer();
       } else if (response.choice == "intern") {
         addIntern();
+      } else {
+        const data = render(employees);
+        console.log(data);
+        fs.writeFile(outputPath, template.generateHTML(data), (err) => {
+          if (err) throw err;
+          console.log("HTML file has been generated successfully!");
+        });
       }
     });
 }
+
+function render(team) {
+  let results = "";
+
+  for (let i = 0; i < team.length; i++) {
+    let employee = team[i];
+    results += employee;
+  }
+  return results;
+}
+
 function addEngineer() {
   inquirer
     .prompt([
@@ -100,7 +117,7 @@ function addEngineer() {
         response.engineer_github
       );
       console.log(engineerInstance);
-      employees.push(engineerInstance);
+      employees.push(template.generateEngineer(engineerInstance));
       console.log(employees);
       menu();
     });
@@ -137,14 +154,13 @@ function addIntern() {
         response.intern_school
       );
       console.log(internInstance);
-      employees.push(internInstance);
+      employees.push(template.generateIntern(internInstance));
       console.log(employees);
       menu();
     });
 }
-const team = [];
 const writeFile = () => {
-  fs.writeFile("outputPath", JSON.stringify(team), (err) => {
+  fs.writeFile("outputPath", JSON.stringify(employees), (err) => {
     if (err) {
       console.log(err);
       return;
@@ -153,6 +169,6 @@ const writeFile = () => {
     }
   });
 };
-// writeHTML();
+
 // initialize app
 init();
